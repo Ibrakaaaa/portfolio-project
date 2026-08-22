@@ -1,58 +1,64 @@
 const express = require('express');
 const router = express.Router();
+const Event = require('../models/Event');
 
-const events = [
-  { id: 1, title: 'React Meetup Munich', date: '2026-09-10' },
-  { id: 2, title: 'DevOps Workshop', date: '2026-09-15' },
-];
-
-router.get('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const event = events.find(e => e.id === id);
-
-  if (!event) {
-    return res.status(404).json({ message: 'Event nije pronađen' });
+// GET svi eventi
+router.get('/', async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  res.json(event);
 });
 
-router.post('/', (req, res) => {
-  const newEvent = {
-    id: events.length + 1,
-    title: req.body.title,
-    date: req.body.date,
-  };
-
-  events.push(newEvent);
-  res.status(201).json(newEvent);
-});
-
-router.put('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const event = events.find(e => e.id === id);
-
-  if (!event) {
-    return res.status(404).json({ message: 'Event nije pronađen' });
+// GET jedan event po id
+router.get('/:id', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ message: 'Event nije pronađen' });
+    }
+    res.json(event);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  event.title = req.body.title;
-  event.date = req.body.date;
-
-  res.json(event);
 });
 
-router.delete('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = events.findIndex(e => e.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ message: 'Event nije pronađen' });
+// POST novi event
+router.post('/', async (req, res) => {
+  try {
+    const newEvent = await Event.create(req.body);
+    res.status(201).json(newEvent);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
-
-  events.splice(index, 1);
-  res.status(204).send();
 });
 
+// PUT izmjena eventa
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedEvent) {
+      return res.status(404).json({ message: 'Event nije pronađen' });
+    }
+    res.json(updatedEvent);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
-module.exports = router; 
+// DELETE event
+router.delete('/:id', async (req, res) => {
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+    if (!deletedEvent) {
+      return res.status(404).json({ message: 'Event nije pronađen' });
+    }
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+module.exports = router;
