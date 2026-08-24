@@ -7,7 +7,7 @@ function App() {
   const [editingId, setEditingId] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/events')
+    fetch('/api/events')
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Greška:', err))
@@ -18,7 +18,7 @@ function App() {
 
     if (editingId) {
       // PUT — izmjena postojećeg eventa
-      fetch(`http://localhost:5000/api/events/${editingId}`, {
+      fetch(`/api/events/${editingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function App() {
         .catch(err => console.error('Greška:', err))
     } else {
       // POST — novi event
-      fetch('http://localhost:5000/api/events', {
+      fetch('/api/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function App() {
   }
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/events/${id}`, {
+    fetch(`/api/events/${id}`, {
       method: 'DELETE',
     })
       .then(() => {
