@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
 // POST novi event
 router.post('/', async (req, res) => {
   try {
-    const newEvent = await Event.create(req.body);
+    const newEvent = await Event.create({ title: req.body.title, date: req.body.date });
     res.status(201).json(newEvent);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
 // PUT izmjena eventa
 router.put('/:id', async (req, res) => {
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, { title: req.body.title, date: req.body.date }, { new: true });
     if (!updatedEvent) {
       return res.status(404).json({ message: 'Event nije pronađen' });
     }
