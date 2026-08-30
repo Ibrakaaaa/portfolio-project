@@ -5,6 +5,10 @@ function App() {
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [editingId, setEditingId] = useState(null)
+  
+function isValidObjectId(id) {
+  return /^[a-f0-9]{24}$/.test(id)
+}
 
   useEffect(() => {
     fetch('/api/events')
@@ -18,7 +22,13 @@ function App() {
 
     if (editingId) {
       // PUT — izmjena postojećeg eventa
+      if (!isValidObjectId(editingId)) {
+        console.error('Invalid event ID format')
+        return
+      }
+
       fetch(`/api/events/${editingId}`, {
+
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -58,6 +68,11 @@ function App() {
   }
 
   const handleDelete = (id) => {
+    if (!isValidObjectId(id)) {
+      console.error('Invalid event ID format')
+      return
+    }
+
     fetch(`/api/events/${id}`, {
       method: 'DELETE',
     })
