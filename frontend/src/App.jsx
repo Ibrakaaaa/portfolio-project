@@ -6,9 +6,9 @@ function App() {
   const [date, setDate] = useState('')
   const [editingId, setEditingId] = useState(null)
   
-function isValidObjectId(id) {
-  return /^[a-f0-9]{24}$/.test(id)
-}
+   function isValidObjectId(id) {
+     return /^[a-f0-9]{24}$/.test(id)
+     }
 
   useEffect(() => {
     fetch('/api/events')
