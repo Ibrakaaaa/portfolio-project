@@ -1,0 +1,24 @@
+name: CD - Deploy to production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preparing SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+
+      - name: Add SSH known hosts
+        run: |
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy to production server
+        run: |
+          ssh -i ~/.ssh/id_deploy ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "/home/ibrahim/deploy.sh"
