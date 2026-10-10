@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     env_file:
       - ./backend/.env
+    environment:
+      - NODE_ENV=production
     expose:
       - "5000"
     logging: *default-logging
