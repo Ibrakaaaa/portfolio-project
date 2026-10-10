@@ -3,7 +3,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB konektovan'))
+  .then(() => console.log('MongoDB konektovan, baza:', mongoose.connection.name))
   .catch(err => console.error('MongoDB greška:', err));
 const express = require('express');
 
