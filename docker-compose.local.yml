@@ -1,0 +1,8 @@
+services:
+  nginx:
+    ports: !override
+      - "8080:80"
+    volumes: !override
+      - ./nginx/nginx.local.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/locations.conf:/etc/nginx/locations.conf:ro
+      - ./landing:/usr/share/nginx/landing:ro

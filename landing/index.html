@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ibrahim Merkez</title>
+  <meta name="description" content="Ibrahim Merkez, frontend and CMS developer in Munich who also runs his own apps in production: Docker, Nginx, HTTPS and CI/CD.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <h1>Ibrahim Merkez</h1>
+        <img class="hero-photo" src="img/profile.webp" alt="Ibrahim Merkez" width="88" height="88">
+      </div>
+      <div class="prose">
+        <p class="lead">I build web applications with React, Next.js and enterprise CMS, and I run them myself: containers, Nginx, HTTPS and a pipeline that ships every merge to main.</p>
+        <p class="sub">Based in Munich. Looking for my next role in frontend, CMS or junior DevOps work.</p>
+      </div>
+      <div class="actions">
+        <a class="button" href="/app/">Open the live app</a>
+        <a href="https://github.com/Ibrakaaaa/portfolio-project" target="_blank" rel="noopener noreferrer">Read the code on GitHub</a>
+        <a href="https://www.linkedin.com/in/ibradev01/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="block" aria-labelledby="how">
+      <div class="wrap">
+        <h2 id="how">What happens when you open this site</h2>
+        <p class="intro prose">This page runs on a server I set up and maintain. Here is the path a request takes, and the path a code change takes before it reaches you.</p>
+
+        <div class="route route--request">
+          <h3>A request</h3>
+          <ol class="line">
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Your browser</strong>
+              <p>Asks for ibrahimmerkez.com over HTTPS.</p>
+            </li>
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Nginx</strong>
+              <p>Handles the TLS certificate from Let's Encrypt, which renews itself, and decides where each request goes.</p>
+            </li>
+            <li class="stop">
+              <span class="dot dot--interchange" aria-hidden="true"></span>
+              <strong>React container</strong>
+              <strong>Express container</strong>
+              <p>Pages come from the React build. Anything under <code>/api</code> goes to the Node.js API.</p>
+            </li>
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>MongoDB Atlas</strong>
+              <p>Stores the data. The database credentials live only on the server, never in the code.</p>
+            </li>
+          </ol>
+          <p class="live" id="api-check" aria-live="polite">Live check: asking the API…</p>
+        </div>
+
+        <div class="route route--deploy">
+          <h3>A change</h3>
+          <ol class="line">
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Pull request</strong>
+              <p>Every change goes through a branch and a pull request to main.</p>
+            </li>
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>GitHub Actions</strong>
+              <p>Builds the backend and frontend Docker images, so a broken build shows up before it is merged.</p>
+            </li>
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Merge to main</strong>
+              <p>Starts a deploy job that connects to the server over SSH with a dedicated deploy key.</p>
+            </li>
+            <li class="stop">
+              <span class="dot" aria-hidden="true"></span>
+              <strong>Hetzner server</strong>
+              <p>A deploy script rebuilds the containers and restarts the stack with Docker Compose.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="work">
+      <div class="wrap">
+        <h2 id="work">Work</h2>
+        <p class="intro prose">I moved from hotel reception into software development in 2025.</p>
+        <ol class="timeline" reversed>
+          <li class="job">
+            <div class="when">Aug 2025 to now</div>
+            <div>
+              <h3>Frontend and CMS developer</h3>
+              <p class="where">asioso, Munich</p>
+              <ul>
+                <li>Build and maintain FirstSpirit templates for two IHK platforms (Munich and Nuremberg), tested on staging before every production release.</li>
+                <li>Built a committee and volunteer management module across several system layers: templates, frontend, JavaScript rendering and APIs.</li>
+                <li>Created more than 40 reusable Storyblok components for a Next.js and React site, covered by Vitest tests.</li>
+                <li>Integrated SonarCloud into existing pipelines and fixed Docker, Node and Netlify build issues.</li>
+                <li>Work with clients directly, and with the team through Git branches, merges and code reviews.</li>
+              </ul>
+            </div>
+          </li>
+          <li class="job">
+            <div class="when">Apr 2024 to Jun 2025</div>
+            <div>
+              <h3>Receptionist</h3>
+              <p class="where">Hotel Brack, Munich</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="tools">
+      <div class="wrap">
+        <h2 id="tools">Tools I work with</h2>
+        <p class="intro prose">From my job and my own projects.</p>
+        <dl class="tools">
+          <div><dt>Frontend</dt><dd>React, Next.js, TypeScript, JavaScript, Tailwind CSS</dd></div>
+          <div><dt>CMS</dt><dd>FirstSpirit, Storyblok</dd></div>
+          <div><dt>Backend</dt><dd>Node.js, Express, MongoDB, REST APIs</dd></div>
+          <div><dt>Operations</dt><dd>Linux, Docker, Docker Compose, Nginx, GitHub Actions, Let's Encrypt</dd></div>
+          <div><dt>Quality</dt><dd>Git with code review, Vitest, SonarCloud</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="next">
+      <div class="wrap">
+        <h2 id="next">What I've added since launch, and what's next</h2>
+        <p class="intro prose">The project is live, and it isn't finished. These are the next steps, in order.</p>
+        <!-- "Delete demo entries automatically after 24 hours" and "Limit how
+             many requests one client can send to the API" move to class="done"
+             together, in the last commit of feature/demo-safeguards, once both
+             are actually implemented and merged. -->
+        <ol class="todo">
+          <li class="done">Keep server logs for at most 30 days, with shortened IP addresses.</li>
+          <li>Delete demo entries automatically after 24 hours.</li>
+          <li>Limit how many requests one client can send to the API.</li>
+          <li>Deploy only after the CI build has passed.</li>
+          <li>Describe the Hetzner server in Terraform, so it can be rebuilt from code.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Ibrahim Merkez, Munich</span>
+      <nav aria-label="Profiles">
+        <a href="https://www.linkedin.com/in/ibradev01/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/Ibrakaaaa" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // Live check: time one real request to the API from the visitor's browser.
+    // Only shown on success -- hidden entirely on error or timeout so visitors
+    // never see a raw "status 500" on the page.
+    (function () {
+      var out = document.getElementById('api-check');
+      var started = performance.now();
+      var controller = new AbortController();
+      var timeout = setTimeout(function () { controller.abort(); }, 5000);
+      fetch('/api/events', { cache: 'no-store', signal: controller.signal })
+        .then(function (res) {
+          clearTimeout(timeout);
+          if (!res.ok) { out.remove(); return; }
+          var ms = Math.round(performance.now() - started);
+          out.innerHTML = 'Live check: the API answered in <b>' + ms + ' ms</b> when you opened this page.';
+        })
+        .catch(function () {
+          clearTimeout(timeout);
+          out.remove();
+        });
+    })();
+
+    // Draw the deploy line when it scrolls into view.
+    (function () {
+      var deploy = document.querySelector('.route--deploy');
+      if (!('IntersectionObserver' in window)) { deploy.classList.add('go'); return; }
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { deploy.classList.add('go'); io.disconnect(); }
+      }, { threshold: 0.4 });
+      io.observe(deploy);
+    })();
+  </script>
+</body>
+</html>
