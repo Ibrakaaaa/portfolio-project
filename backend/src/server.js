@@ -3,8 +3,8 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB konektovan, baza:', mongoose.connection.name))
-  .catch(err => console.error('MongoDB greška:', err));
+  .then(() => console.log('MongoDB connected, database:', mongoose.connection.name))
+  .catch(err => console.error('MongoDB error:', err));
 const express = require('express');
 
 const app = express();
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json({ limit: '10kb' }));
 
 app.get('/', (req, res) => {
-  res.send('API radi!');
+  res.send('API is running!');
 });
 
 const eventsRouter = require('./routes/events');
@@ -34,6 +34,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server sluša na portu ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 

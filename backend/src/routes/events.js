@@ -12,7 +12,7 @@ function handleError(res, err) {
   return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
 }
 
-// GET svi eventi
+// GET all events
 router.get('/', async (req, res) => {
   try {
     const events = await Event.find();
@@ -22,12 +22,12 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET jedan event po id
+// GET a single event by id
 router.get('/:id', async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) {
-      return res.status(404).json({ message: 'Event nije pronađen' });
+      return res.status(404).json({ message: 'Event not found' });
     }
     res.json(event);
   } catch (err) {
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST novi event
+// POST a new event
 router.post('/', async (req, res) => {
   try {
     const newEvent = await Event.create({ title: req.body.title, date: req.body.date });
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT izmjena eventa
+// PUT update an event
 router.put('/:id', async (req, res) => {
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
@@ -54,7 +54,7 @@ router.put('/:id', async (req, res) => {
       { new: true, runValidators: true, context: 'query' }
     );
     if (!updatedEvent) {
-      return res.status(404).json({ message: 'Event nije pronađen' });
+      return res.status(404).json({ message: 'Event not found' });
     }
     res.json(updatedEvent);
   } catch (err) {
@@ -67,7 +67,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id);
     if (!deletedEvent) {
-      return res.status(404).json({ message: 'Event nije pronađen' });
+      return res.status(404).json({ message: 'Event not found' });
     }
     res.status(204).send();
   } catch (err) {
