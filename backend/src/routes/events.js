@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
       { title: req.body.title, date: req.body.date },
-      { new: true, runValidators: true, context: 'query' }
+      { returnDocument: 'after', runValidators: true, context: 'query' }
     );
     if (!updatedEvent) {
       return res.status(404).json({ message: 'Event not found' });
