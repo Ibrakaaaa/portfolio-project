@@ -20,6 +20,13 @@ app.get('/', (req, res) => {
 const eventsRouter = require('./routes/events');
 app.use('/api/events', eventsRouter);
 
+// Anything else under /api/ gets a JSON 404 instead of Express's default
+// HTML "Cannot GET ..." page. Non-API paths are never proxied to this app,
+// so they keep nginx's own 404 -- this only covers /api/*.
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'Not found' });
+});
+
 // express.json() calls next(err) on malformed JSON or an oversized body --
 // without this, Express's default error handler would respond with HTML
 // (and a stack trace outside production) instead of JSON.
