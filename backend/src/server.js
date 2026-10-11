@@ -3,21 +3,29 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB konektovan, baza:', mongoose.connection.name))
-  .catch(err => console.error('MongoDB greška:', err));
+  .then(() => console.log('MongoDB connected, database:', mongoose.connection.name))
+  .catch(err => console.error('MongoDB error:', err));
 const express = require('express');
 
 const app = express();
+app.disable('x-powered-by');
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json({ limit: '10kb' }));
 
 app.get('/', (req, res) => {
-  res.send('API radi!');
+  res.send('API is running!');
 });
 
 const eventsRouter = require('./routes/events');
 app.use('/api/events', eventsRouter);
+
+// Anything else under /api/ gets a JSON 404 instead of Express's default
+// HTML "Cannot GET ..." page. Non-API paths are never proxied to this app,
+// so they keep nginx's own 404 -- this only covers /api/*.
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'Not found' });
+});
 
 // express.json() calls next(err) on malformed JSON or an oversized body --
 // without this, Express's default error handler would respond with HTML
@@ -34,6 +42,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server sluša na portu ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
 

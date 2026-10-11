@@ -50,7 +50,7 @@ function App() {
     e.preventDefault()
 
     if (editingId) {
-      // PUT — izmjena postojećeg eventa
+      // PUT — update existing event
       if (!isValidObjectId(editingId)) {
         console.error('Invalid event ID format')
         return
@@ -85,7 +85,7 @@ function App() {
         })
         .catch(() => setError('Could not reach the server. Please try again later.'))
     } else {
-      // POST — novi event
+      // POST — new event
       fetch('/api/events', {
         method: 'POST',
         headers: {
