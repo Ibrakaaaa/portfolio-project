@@ -1,0 +1,19 @@
+# Installed on the server at /etc/logrotate.d/portfolio-nginx (not used by
+# Docker Compose directly -- this governs the real files nginx writes to via
+# the ./logs/nginx bind mount in docker-compose.yml).
+#
+# CHECK THIS PATH before installing: it must match where the repo is checked
+# out on the server. Confirm with `pwd` in the deploy directory, e.g.:
+#   ssh ibrahim@<server> "ls -d ~/portfolio-project || find / -maxdepth 3 -iname 'portfolio-project*' 2>/dev/null"
+/home/ibrahim/portfolio-project/logs/nginx/*.log {
+    daily
+    rotate 29
+    maxage 30
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+    dateext
+    dateformat -%Y-%m-%d
+}

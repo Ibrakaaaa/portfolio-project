@@ -1,20 +1,49 @@
 import { useState, useEffect } from 'react'
 
+// nginx's own 429 response (and any upstream 5xx) is an HTML error page,
+// not JSON -- so callers must check res.ok before ever calling res.json().
+function describeError(status) {
+  if (status === 400) return 'That entry was rejected. Please check the title and date and try again.'
+  if (status === 429) return 'Too many requests right now. Please wait a moment and try again.'
+  if (status >= 500) return 'The server had a problem. Please try again in a moment.'
+  return 'Something went wrong. Please try again.'
+}
+
 function App() {
   const [events, setEvents] = useState([])
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [editingId, setEditingId] = useState(null)
-  
+  const [error, setError] = useState(null)
+
    function isValidObjectId(id) {
      return /^[a-f0-9]{24}$/.test(id)
      }
 
   useEffect(() => {
     fetch('/api/events')
-      .then(res => res.json())
-      .then(data => setEvents(data))
-      .catch(err => console.error('Greška:', err))
+      .then(res => {
+        if (!res.ok) {
+          setEvents([])
+          setError(describeError(res.status))
+          return null
+        }
+        return res.json()
+      })
+      .then(data => {
+        if (data === null) return
+        if (!Array.isArray(data)) {
+          setEvents([])
+          setError('Unexpected response from the server.')
+          return
+        }
+        setEvents(data)
+        setError(null)
+      })
+      .catch(() => {
+        setEvents([])
+        setError('Could not reach the server. Please try again later.')
+      })
   }, [])
 
   const handleSubmit = (e) => {
@@ -35,19 +64,26 @@ function App() {
         },
         body: JSON.stringify({ title, date }),
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            setError(describeError(res.status))
+            return null
+          }
+          return res.json()
+        })
         .then(updatedEvent => {
+          if (!updatedEvent) return
           setEvents(
             events.map(event =>
               event._id === editingId ? updatedEvent : event
             )
           )
-
           setTitle('')
           setDate('')
           setEditingId(null)
+          setError(null)
         })
-        .catch(err => console.error('Greška:', err))
+        .catch(() => setError('Could not reach the server. Please try again later.'))
     } else {
       // POST — novi event
       fetch('/api/events', {
@@ -57,13 +93,21 @@ function App() {
         },
         body: JSON.stringify({ title, date }),
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            setError(describeError(res.status))
+            return null
+          }
+          return res.json()
+        })
         .then(newEvent => {
+          if (!newEvent) return
           setEvents([...events, newEvent])
           setTitle('')
           setDate('')
+          setError(null)
         })
-        .catch(err => console.error('Greška:', err))
+        .catch(() => setError('Could not reach the server. Please try again later.'))
     }
   }
 
@@ -76,10 +120,15 @@ function App() {
     fetch(`/api/events/${id}`, {
       method: 'DELETE',
     })
-      .then(() => {
+      .then(res => {
+        if (!res.ok) {
+          setError(describeError(res.status))
+          return
+        }
         setEvents(events.filter(event => event._id !== id))
+        setError(null)
       })
-      .catch(err => console.error('Greška:', err))
+      .catch(() => setError('Could not reach the server. Please try again later.'))
   }
 
   const handleEditClick = (event) => {
@@ -119,6 +168,18 @@ function App() {
             Create, manage and organize your upcoming events.
           </p>
         </div>
+
+        {/* Demo notice */}
+        <p className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 px-4 py-3 text-sm text-amber-200">
+          Demo: entries are deleted after 24 hours. Please don't enter personal data.
+        </p>
+
+        {/* Error banner */}
+        {error && (
+          <p className="mb-6 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm text-red-300">
+            {error}
+          </p>
+        )}
 
         {/* Form Card */}
         <div className="mb-10 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl">
