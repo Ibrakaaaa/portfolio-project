@@ -8,6 +8,7 @@ mongoose.connect(process.env.MONGO_URI)
 const express = require('express');
 
 const app = express();
+app.disable('x-powered-by');
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json({ limit: '10kb' }));
